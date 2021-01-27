@@ -3,7 +3,15 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine("mysql+pymysql://dirWatcher:DirWatch@123@localhost:3306/dirwatch_python", echo=False)
+from config import db_config
+
+user_name = db_config["username"]
+password = db_config["password"]
+db = db_config["db"]
+address = db_config["address"]
+schema = db_config["schema"]
+
+engine = create_engine(f"{db}://{user_name}:{password}@{address}/{schema}", echo=False)
 
 Session = sessionmaker(bind=engine)
 session = Session()

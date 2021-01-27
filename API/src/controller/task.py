@@ -1,3 +1,4 @@
+import logging
 from flask_restful import Resource, reqparse, abort, marshal_with, fields, inputs
 from flask import jsonify
 
@@ -22,16 +23,26 @@ task_detail_field_list = {"task_detail": fields.List(fields.Nested(task_detail_f
 class TaskDetail(Resource):
     @marshal_with(task_detail_field)
     def get(self, id):
-        task_detail = task.Task.get_task_detail(id).first()
-        if not task_detail:
-            abort(404, message=f"Task detail for the id {id} is not found.")
-        return task_detail
+        logging.info("entered GET of TaskDetail")
+        try:
+            task_detail = task.get_task_detail(id).first()
+            if not task_detail:
+                abort(404, message=f"Task detail for the id {id} is not found.")
+            logging.info("exiting GET of TaskDetail")
+            return task_detail
+        except Exception as e:
+            logging.error(str(e))
 
 
 class TaskDetails(Resource):
     @marshal_with(task_detail_field_list)
     def get(self):
-        task_details = task.Task.get_all_task_detail()
-        if not task_details:
-            abort(404, message="task details are not found.")
-        return {"items": task_details}
+        logging.info("entered GET of TaskDetails")
+        try:
+            task_details = task.get_all_task_detail()
+            if not task_details:
+                abort(404, message="task details are not found.")
+            logging.info("exiting GET of TaskDetails")
+            return {"items": task_details}
+        except Exception as e:
+            logging.error(e)
