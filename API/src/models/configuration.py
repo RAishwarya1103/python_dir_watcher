@@ -14,12 +14,10 @@ class Configuration:
         config = database.session.query(database.Configuration).filter(database.Configuration.isActive == True)
         return config
 
-    def add_config(directory, interval, period, magic_string, is_active):
+    def add_config(directory, magic_string, is_active):
         now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         config = database.Configuration(
             directory=directory,
-            interval=interval,
-            period=period,
             magicString=magic_string,
             isActive=is_active,
             createdAt=now,

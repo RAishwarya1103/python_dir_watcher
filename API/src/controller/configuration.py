@@ -7,8 +7,6 @@ from models import configuration
 config_field = {
     "id": fields.Integer,
     "directory": fields.String,
-    "interval": fields.Integer,
-    "period": fields.String,
     "magicString": fields.String,
     "isActive": fields.Boolean,
     "createdAt": fields.DateTime,
@@ -20,17 +18,12 @@ config_field_list = {"configs": fields.List(fields.Nested(config_field), attribu
 # request input validators
 config_post_args = reqparse.RequestParser()
 config_post_args.add_argument("directory", type=str, help="Directory to be searced is required", required=True)
-config_post_args.add_argument("interval", type=int, help="interval is required", required=True)
-config_post_args.add_argument("period", type=str, help="time unit as period is required", required=True)
 config_post_args.add_argument("magicString", type=str, help="magic string to be searched is required", required=True)
 config_post_args.add_argument("isActive", type=inputs.boolean, help="isActive config is required", required=True)
 
 config_put_args = reqparse.RequestParser()
 config_put_args.add_argument("id", type=int, help="id of the config to be updated is required", required=True)
 config_put_args.add_argument("isActive", type=inputs.boolean, help="isActive config is required", required=True)
-
-config_delete_args = reqparse.RequestParser()
-config_delete_args.add_argument("id", type=int, help="id of the config to be updated is required", required=True)
 
 
 class ActiveConfig(Resource):
@@ -53,11 +46,9 @@ class Config(Resource):
     def post(self):
         args = config_post_args.parse_args()
         directory = args["directory"]
-        interval = args["interval"]
-        period = args["period"]
         magic_string = args["magicString"]
         is_active = args["isActive"]
-        result = configuration.Configuration.add_config(directory, interval, period, magic_string, is_active)
+        result = configuration.Configuration.add_config(directory, magic_string, is_active)
         return {"message": "Config added successfully"}
 
     def put(self):

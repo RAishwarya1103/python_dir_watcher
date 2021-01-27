@@ -15,8 +15,6 @@ class Configuration(Base):
     __tablename__ = "configuration"
     id = Column(Integer, primary_key=True)
     directory = Column(String(100))
-    interval = Column(Integer)
-    period = Column(String(100))
     magicString = Column(String(100))
     isActive = Column(Boolean)
     createdAt = Column(DateTime(6))
